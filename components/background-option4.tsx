@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-// OPTION 4: AURORA BOREALIS (NORTHERN LIGHTS) EFFECT
+// OPTION 4: AURORA BOREALIS
 export function AuroraBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -16,129 +16,83 @@ export function AuroraBackground() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    class AuroraWave {
-      amplitude: number
-      frequency: number
-      speed: number
-      offset: number
-      color: { r: number; g: number; b: number }
-      opacity: number
-      yBase: number
-
-      constructor(index: number) {
-        this.amplitude = Math.random() * 100 + 50
-        this.frequency = Math.random() * 0.01 + 0.005
-        this.speed = Math.random() * 0.02 + 0.01
-        this.offset = Math.random() * Math.PI * 2
-        this.opacity = Math.random() * 0.3 + 0.1
-        this.yBase = canvas.height * 0.3 + index * 50
-        
-        const colors = [
-          { r: 139, g: 92, b: 246 },   // Purple
-          { r: 6, g: 182, b: 212 },     // Cyan
-        ]
-        this.color = colors[Math.floor(Math.random() * colors.length)]
-      }
-
-      draw(time: number) {
-        const gradient = ctx.createLinearGradient(0, this.yBase - this.amplitude, 0, this.yBase + this.amplitude * 2)
-        gradient.addColorStop(0, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0)`)
-        gradient.addColorStop(0.5, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`)
-        gradient.addColorStop(1, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0)`)
-        
-        ctx.fillStyle = gradient
-        ctx.beginPath()
-        
-        for (let x = 0; x <= canvas.width; x += 5) {
-          const y = this.yBase + Math.sin(x * this.frequency + time * this.speed + this.offset) * this.amplitude
-          
-          if (x === 0) {
-            ctx.moveTo(x, y)
-          } else {
-            ctx.lineTo(x, y)
-          }
-        }
-        
-        ctx.lineTo(canvas.width, canvas.height)
-        ctx.lineTo(0, canvas.height)
-        ctx.closePath()
-        ctx.fill()
-        
-        // Add shimmer effect
-        const shimmerGradient = ctx.createLinearGradient(0, this.yBase - this.amplitude, 0, this.yBase)
-        shimmerGradient.addColorStop(0, `rgba(255, 255, 255, 0)`)
-        shimmerGradient.addColorStop(0.5, `rgba(255, 255, 255, ${this.opacity * 0.3})`)
-        shimmerGradient.addColorStop(1, `rgba(255, 255, 255, 0)`)
-        
-        ctx.fillStyle = shimmerGradient
-        ctx.beginPath()
-        
-        for (let x = 0; x <= canvas.width; x += 10) {
-          const y = this.yBase + Math.sin(x * this.frequency * 2 + time * this.speed * 2 + this.offset) * this.amplitude * 0.5
-          
-          if (x === 0) {
-            ctx.moveTo(x, y)
-          } else {
-            ctx.lineTo(x, y)
-          }
-        }
-        
-        ctx.lineTo(canvas.width, this.yBase + this.amplitude)
-        ctx.lineTo(0, this.yBase + this.amplitude)
-        ctx.closePath()
-        ctx.fill()
-      }
-    }
-
-    const waves: AuroraWave[] = []
-    for (let i = 0; i < 5; i++) {
-      waves.push(new AuroraWave(i))
-    }
-
-    let animationFrameId: number
     let time = 0
 
-    const animate = () => {
-      // Clear with fade effect
-      ctx.fillStyle = 'rgba(10, 10, 20, 0.1)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      // Draw aurora waves
-      waves.forEach(wave => {
-        wave.draw(time)
-      })
-      
-      // Add stars
-      if (Math.random() < 0.1) {
-        const x = Math.random() * canvas.width
-        const y = Math.random() * canvas.height * 0.5
-        const size = Math.random() * 2
+    function drawAurora(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+      const colors = [
+        { r: 59, g: 130, b: 246 },  // Blue
+        { r: 6, g: 182, b: 212 },   // Cyan
+        { r: 168, g: 85, b: 247 },  // Purple
+        { r: 34, g: 197, b: 94 }    // Green
+      ]
+
+      for (let i = 0; i < 3; i++) {
+        const color = colors[i % colors.length]
+        const gradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight)
         
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
+        for (let j = 0; j < 5; j++) {
+          const pos = j / 4
+          const wave = Math.sin(time * 0.001 + i * 2 + j * 0.5) * 0.3 + 0.5
+          gradient.addColorStop(
+            pos,
+            `rgba(${color.r}, ${color.g}, ${color.b}, ${wave * 0.1})`
+          )
+        }
+
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+        
+        // Wave effect
         ctx.beginPath()
-        ctx.arc(x, y, size, 0, Math.PI * 2)
+        for (let x = 0; x < canvasWidth; x += 10) {
+          const y = canvasHeight * 0.3 + 
+                   Math.sin(x * 0.01 + time * 0.002 + i) * 100 +
+                   Math.cos(x * 0.005 + time * 0.001) * 50
+          
+          if (x === 0) {
+            ctx.moveTo(x, y)
+          } else {
+            ctx.lineTo(x, y)
+          }
+        }
+        
+        ctx.lineTo(canvasWidth, canvasHeight)
+        ctx.lineTo(0, canvasHeight)
+        ctx.closePath()
+        
+        const waveGradient = ctx.createLinearGradient(0, 0, 0, canvasHeight)
+        waveGradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`)
+        waveGradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, 0.05)`)
+        waveGradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0.1)`)
+        
+        ctx.fillStyle = waveGradient
         ctx.fill()
       }
-      
-      time += 1
-      animationFrameId = requestAnimationFrame(animate)
     }
+
+    function animate() {
+      if (!ctx || !canvas) return
+      
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      
+      drawAurora(ctx, canvas.width, canvas.height)
+      
+      time++
+      requestAnimationFrame(animate)
+    }
+
     animate()
 
     const handleResize = () => {
+      if (!canvas) return
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
-      
-      // Recreate waves on resize
-      waves.length = 0
-      for (let i = 0; i < 5; i++) {
-        waves.push(new AuroraWave(i))
-      }
     }
+
     window.addEventListener('resize', handleResize)
 
     return () => {
-      cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
@@ -146,8 +100,7 @@ export function AuroraBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none opacity-60 dark:opacity-80"
-      style={{ background: 'transparent' }}
+      className="fixed inset-0 -z-10"
     />
   )
 }

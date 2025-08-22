@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { projects } from '@/data/projects'
-import { Github, ExternalLink, Award, ArrowRight, Sparkles } from 'lucide-react'
+import { Github, ExternalLink, Award, ArrowRight, Code2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRef } from 'react'
 
@@ -24,28 +24,24 @@ export function FeaturedProjects() {
   const featuredProjects = projects.filter(p => p.featured).slice(0, 2)
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
+    hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
         duration: 0.5,
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100
       }
     }
   }
 
   return (
-    <section ref={containerRef} className="py-20 bg-secondary/30 relative overflow-hidden">
-      {/* Animated background elements */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0 opacity-5"
-      >
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary rounded-full blur-3xl" />
-      </motion.div>
+    <section ref={containerRef} className="py-20 bg-background relative overflow-hidden">
+      {/* Minimalist grid pattern */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -61,21 +57,22 @@ export function FeaturedProjects() {
             className="text-center"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 text-primary mb-4"
               whileHover={{ scale: 1.05 }}
             >
-              <Sparkles className="h-4 w-4" />
+              <Code2 className="h-4 w-4" />
               <span className="text-sm font-medium">Featured Work</span>
             </motion.div>
             
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Featured Projects</h2>
             <motion.div 
-              className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12"
+              className="w-20 h-0.5 bg-primary mx-auto mb-12"
               initial={{ width: 0 }}
               animate={inView ? { width: 80 } : {}}
               transition={{ duration: 0.8, delay: 0.2 }}
             />
           </motion.div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
             {featuredProjects.map((project, index) => (
               <motion.div
@@ -91,128 +88,95 @@ export function FeaturedProjects() {
                 className="group"
               >
                 <motion.div 
-                  className="bg-card border border-border rounded-xl p-8 hover:shadow-2xl hover:border-primary/50 transition-all duration-200 h-full flex flex-col"
+                  className="bg-card border border-white/10 rounded-lg p-8 hover:border-primary/50 transition-all duration-200 h-full flex flex-col"
                   layoutId={`project-${project.id}`}
                 >
                   {project.patent && (
                     <motion.div 
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-primary/20 to-secondary/20 text-primary rounded-full text-sm mb-4 w-fit"
+                      className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm mb-4 w-fit"
                       initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.2 + 0.3 }}
-                      whileHover={{ scale: 1.05 }}
+                      animate={inView ? { x: 0, opacity: 1 } : {}}
+                      transition={{ delay: 0.3 + index * 0.2 }}
                     >
-                      <Award className="h-4 w-4" />
-                      <span>Patent: {project.patent}</span>
+                      <Award className="h-3 w-3" />
+                      <span>Patent #{project.patent}</span>
                     </motion.div>
                   )}
                   
-                  <motion.h3 
-                    className="text-2xl font-bold mb-3 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.2 + 0.4 }}
-                  >
+                  <h3 className="text-xl font-bold mb-3 text-foreground">
                     {project.title}
-                  </motion.h3>
+                  </h3>
                   
-                  <motion.p 
-                    className="text-muted-foreground mb-6 flex-grow"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.2 + 0.5 }}
-                  >
+                  <p className="text-muted-foreground mb-4 flex-grow">
                     {project.description}
-                  </motion.p>
+                  </p>
                   
-                  <motion.div 
-                    className="space-y-3 mb-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.2 + 0.6 }}
-                  >
+                  {/* Achievements */}
+                  <div className="space-y-2 mb-6">
                     {project.achievements.slice(0, 2).map((achievement, i) => (
-                      <motion.div 
-                        key={i} 
-                        className="flex items-start"
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.2 + 0.7 + i * 0.1 }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <ArrowRight className="h-4 w-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{achievement}</span>
-                      </motion.div>
+                      <div key={i} className="flex items-start gap-2">
+                        <div className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">{achievement}</p>
+                      </div>
                     ))}
-                  </motion.div>
+                  </div>
                   
-                  <motion.div 
-                    className="flex flex-wrap gap-2 mb-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.2 + 0.8 }}
-                  >
-                    {project.technologies.slice(0, 4).map((tech, techIndex) => (
-                      <motion.span
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.technologies.slice(0, 5).map((tech) => (
+                      <span
                         key={tech}
-                        className="px-3 py-1 text-xs bg-secondary text-secondary-foreground rounded-full"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ 
-                          delay: index * 0.2 + 0.9 + techIndex * 0.05,
-                          type: "spring",
-                          stiffness: 200
-                        }}
-                        whileHover={{ scale: 1.1 }}
+                        className="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs text-muted-foreground"
                       >
                         {tech}
-                      </motion.span>
+                      </span>
                     ))}
-                  </motion.div>
+                  </div>
                   
-                  <motion.div className="flex gap-4 mt-auto">
+                  {/* Links */}
+                  <div className="flex items-center gap-4">
                     {project.github && (
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Link
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
-                        >
-                          <Github className="h-4 w-4" />
-                          View Code
-                        </Link>
-                      </motion.div>
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <Github className="h-4 w-4" />
+                        <span className="text-sm">View Code</span>
+                      </a>
                     )}
-                  </motion.div>
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        <span className="text-sm">Live Demo</span>
+                      </a>
+                    )}
+                  </div>
                 </motion.div>
               </motion.div>
             ))}
           </div>
-          
-          <motion.div 
+
+          {/* View All Projects Button */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.6 }}
             className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.8 }}
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-transparent border border-white/10 text-foreground rounded-lg hover:bg-white/5 hover:border-primary/50 transition-all duration-200 font-medium"
             >
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-xl hover:shadow-lg transition-all duration-200 font-medium"
-              >
-                View All Projects
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </motion.div>
-              </Link>
-            </motion.div>
+              View All Projects
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </motion.div>
         </motion.div>
       </div>

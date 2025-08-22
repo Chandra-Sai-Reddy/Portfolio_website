@@ -23,6 +23,19 @@ export const experiences: Experience[] = [
     technologies: ["AWS", "ECS", "Lambda", "Step Functions", "Python", "Docker", "Machine Learning", "RAG"]
   },
   {
+    id: "sde-dsa",
+    title: "SDE",
+    company: "DSA - SRM University - AP",
+    location: "Vijayawada, India",
+    duration: "August 2023 – May 2024",
+    description: [
+      "Led development of a chatbot powered by NLP and machine learning algorithms, efficiently automating grievance resolution for over 10,000 students, resulting in a 60% reduction in response times and substantial improvements",
+      "Increased efficiency of resolving student queries by 72% through integration of advanced machine learning models and real-time data processing techniques",
+      "Optimized Chatbot performance by implementing NLP tokenizing and part-of-speech tagging, improving response accuracy by 43%"
+    ],
+    technologies: ["NLP", "Machine Learning", "Python", "Chatbot Development", "Natural Language Processing", "Data Processing", "AI"]
+  },
+  {
     id: "salesforce",
     title: "Salesforce DevOps Engineer",
     company: "Onsite",

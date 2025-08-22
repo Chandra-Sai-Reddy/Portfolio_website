@@ -19,8 +19,7 @@ export function Skills() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Skills</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Skills</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {Object.entries(skillCategories).map(([category, skills], categoryIndex) => (
@@ -48,7 +47,7 @@ export function Skills() {
                           initial={{ width: 0 }}
                           animate={inView ? { width: `${skill.level}%` } : {}}
                           transition={{ duration: 1, delay: categoryIndex * 0.1 + index * 0.05 }}
-                          className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full"
+                          className="bg-primary h-2 rounded-full"
                         />
                       </div>
                     </motion.div>

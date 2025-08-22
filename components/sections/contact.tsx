@@ -5,6 +5,8 @@ import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
 import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { CopyEmail, MagneticButton } from '@/components/ui/micro-interactions'
+import { TextReveal } from '@/components/ui/text-reveal'
 
 export function Contact() {
   const { ref, inView } = useInView({
@@ -71,8 +73,7 @@ export function Contact() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Get In Touch</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-8"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">Get In Touch</h2>
           
           {/* Available for opportunities badge */}
           <div className="text-center mb-12">
@@ -113,7 +114,12 @@ export function Contact() {
                     <div className="p-3 bg-primary/10 rounded-lg">
                       <item.icon className="h-5 w-5 text-primary" />
                     </div>
-                    {item.href ? (
+                    {item.label === 'Email' ? (
+                      <div>
+                        <p className="text-sm text-muted-foreground">{item.label}</p>
+                        <CopyEmail email={item.value} className="font-medium cursor-pointer" />
+                      </div>
+                    ) : item.href ? (
                       <a 
                         href={item.href}
                         className="hover:text-primary transition-colors"

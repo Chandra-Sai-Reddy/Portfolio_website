@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-// OPTION 2: FLOATING ORBS
-export function FloatingOrbsBackground() {
+export function ParticleFlowBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -16,76 +15,61 @@ export function FloatingOrbsBackground() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    class Orb {
+    class Particle {
       x: number
       y: number
-      radius: number
-      vx: number
-      vy: number
+      size: number
+      speedX: number
+      speedY: number
       color: string
-      opacity: number
 
       constructor(canvasWidth: number, canvasHeight: number) {
         this.x = Math.random() * canvasWidth
         this.y = Math.random() * canvasHeight
-        this.radius = Math.random() * 100 + 50
-        this.vx = (Math.random() - 0.5) * 0.5
-        this.vy = (Math.random() - 0.5) * 0.5
+        this.size = Math.random() * 2 + 0.5
+        this.speedX = (Math.random() - 0.5) * 0.5
+        this.speedY = (Math.random() - 0.5) * 0.5
         
         const colors = ['59, 130, 246', '6, 182, 212', '168, 85, 247']
         this.color = colors[Math.floor(Math.random() * colors.length)]
-        this.opacity = Math.random() * 0.3 + 0.1
       }
 
       update(canvasWidth: number, canvasHeight: number) {
-        this.x += this.vx
-        this.y += this.vy
-        
-        // Bounce off walls
-        if (this.x + this.radius > canvasWidth || this.x - this.radius < 0) {
-          this.vx = -this.vx
-        }
-        
-        if (this.y + this.radius > canvasHeight || this.y - this.radius < 0) {
-          this.vy = -this.vy
-        }
+        this.x += this.speedX
+        this.y += this.speedY
+
+        if (this.x < 0) this.x = canvasWidth
+        if (this.x > canvasWidth) this.x = 0
+        if (this.y < 0) this.y = canvasHeight
+        if (this.y > canvasHeight) this.y = 0
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        const gradient = ctx.createRadialGradient(
-          this.x, this.y, 0,
-          this.x, this.y, this.radius
-        )
-        
-        gradient.addColorStop(0, `rgba(${this.color}, ${this.opacity})`)
-        gradient.addColorStop(0.5, `rgba(${this.color}, ${this.opacity * 0.5})`)
-        gradient.addColorStop(1, `rgba(${this.color}, 0)`)
-        
-        ctx.fillStyle = gradient
         ctx.beginPath()
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${this.color}, 0.8)`
         ctx.fill()
       }
     }
 
-    const orbs: Orb[] = []
-    const orbCount = 5
+    const particles: Particle[] = []
+    const particleCount = 100
 
-    for (let i = 0; i < orbCount; i++) {
-      orbs.push(new Orb(canvas.width, canvas.height))
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(canvas.width, canvas.height))
     }
 
     function animate() {
       if (!ctx || !canvas) return
       
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.02)'
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      orbs.forEach(orb => {
-        orb.update(canvas.width, canvas.height)
-        orb.draw(ctx)
+
+      particles.forEach(particle => {
+        particle.update(canvas.width, canvas.height)
+        particle.draw(ctx)
       })
-      
+
       requestAnimationFrame(animate)
     }
 

@@ -4,7 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
-import { BackgroundSelector } from '@/components/background-selector'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,12 +31,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
           <div className="min-h-screen bg-background relative">
-            <BackgroundSelector />
             <Navigation />
             <main className="relative z-10">{children}</main>
             <Footer />

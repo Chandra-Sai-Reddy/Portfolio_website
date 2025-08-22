@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react'
 
-// OPTION 1: STARFIELD GALAXY EFFECT
 export function StarfieldBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -64,11 +63,11 @@ export function StarfieldBackground() {
         ctx.closePath()
         
         // Draw trail
-        ctx.beginPath()
         const gradient = ctx.createLinearGradient(this.prevX, this.prevY, x, y)
         gradient.addColorStop(0, `rgba(${this.color}, 0)`)
         gradient.addColorStop(1, `rgba(${this.color}, ${0.5 - this.z / 1000})`)
         
+        ctx.beginPath()
         ctx.strokeStyle = gradient
         ctx.lineWidth = this.size / 2
         ctx.moveTo(this.prevX, this.prevY)

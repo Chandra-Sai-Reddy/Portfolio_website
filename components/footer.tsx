@@ -1,195 +1,115 @@
 "use client"
 
 import Link from 'next/link'
+import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, Phone, Copyright, ExternalLink, Heart } from 'lucide-react'
 
 export function Footer() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    }
-  }
-
-  const socialLinks = [
-    { icon: Github, href: "https://github.com/Chandra-Sai-Reddy", label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/chandra-sai-reddy/", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:donthireddy.chandu@gmail.com", label: "Email" },
-    { icon: Phone, href: "tel:+16786150897", label: "Phone" }
-  ]
-
-  const quickLinks = [
-    { href: "/about", label: "About Me" },
-    { href: "/projects", label: "Projects" },
-    { href: "/experience", label: "Experience" },
-    { href: "/resume.pdf", label: "Resume", external: true }
-  ]
 
   return (
-    <motion.footer 
-      className="w-full pt-12 pb-4 border-t bg-background/60 backdrop-blur-sm"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      variants={containerVariants}
-    >
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* About Section */}
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <motion.h3 
-              className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              Chandra Sai Reddy
-            </motion.h3>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Machine Learning & Cloud Engineer based in Atlanta,
-              specialized in AWS, MLOps, and scalable AI solutions.
+    <footer className="relative bg-background border-t border-white/10">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Brand Section */}
+          <div>
+            <h3 className="text-2xl font-bold text-primary mb-2">
+              CSR
+            </h3>
+            <p className="text-muted-foreground text-sm">
+              Machine Learning & Cloud Engineer
             </p>
-          </motion.div>          
-          {/* Quick Links */}
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <h3 className="text-lg font-bold">Quick Links</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link, index) => (
-                <motion.li 
-                  key={link.href}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ x: 5 }}
-                >
-                  {link.external ? (
-                    <a 
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
-                    >
-                      {link.label} <ExternalLink className="h-3 w-3" />
-                    </a>
-                  ) : (
-                    <Link 
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-          
-          {/* Connect */}
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <h3 className="text-lg font-bold">Connect</h3>
-            <div className="flex flex-wrap gap-3">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('http') ? "_blank" : undefined}
-                  rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
-                  className="p-2 rounded-full bg-muted/50 hover:bg-primary/10 transition-colors"
-                  aria-label={social.label}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ 
-                    delay: index * 0.1,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                  whileHover={{ 
-                    scale: 1.2,
-                    rotate: 360,
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <social.icon className="h-5 w-5" />
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-          
-          {/* Contact Info */}
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <h3 className="text-lg font-bold">Contact Info</h3>
-            <motion.div 
-              className="space-y-2 text-sm text-muted-foreground"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.p whileHover={{ x: 5 }} className="cursor-default">
-                Atlanta, Georgia, USA
-              </motion.p>
-              <motion.p whileHover={{ x: 5 }} className="cursor-default">
-                +1 (678) 615-0897
-              </motion.p>
-              <motion.p whileHover={{ x: 5 }} className="cursor-default">
-                donthireddy.chandu@gmail.com
-              </motion.p>
-            </motion.div>
-          </motion.div>
-        </div>
-        
-        {/* Bottom Section */}
-        <motion.div 
-          className="mt-12 border-t pt-6"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <motion.div 
-              className="flex items-center text-sm text-muted-foreground"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Copyright className="mr-1 h-3.5 w-3.5" />
-              <span>{new Date().getFullYear()} Chandra Sai Reddy. All rights reserved.</span>
-            </motion.div>
-            <motion.div 
-              className="text-sm text-muted-foreground flex items-center gap-1.5"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <span>Built with</span>
-              <motion.div
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 360, 360]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
-              </motion.div>
-              <span>using Next.js & TypeScript</span>
-            </motion.div>
+            <p className="text-muted-foreground text-sm mt-2">
+              Building intelligent systems at scale
+            </p>
           </div>
-        </motion.div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-foreground font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  About Me
+                </Link>
+              </li>
+              <li>
+                <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link href="/experience" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Experience
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Connect Section */}
+          <div>
+            <h4 className="text-foreground font-semibold mb-4">Connect</h4>
+            <div className="flex gap-4 mb-4">
+              <a
+                href="https://github.com/Chandra-Sai-Reddy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg border border-white/10 hover:border-primary hover:text-primary transition-all duration-200"
+                aria-label="GitHub"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/chandra-sai-reddy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg border border-white/10 hover:border-primary hover:text-primary transition-all duration-200"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+              <a
+                href="mailto:donthireddy.chandu@gmail.com"
+                className="p-2 rounded-lg border border-white/10 hover:border-primary hover:text-primary transition-all duration-200"
+                aria-label="Email"
+              >
+                <Mail className="h-5 w-5" />
+              </a>
+            </div>
+            <p className="text-muted-foreground text-sm">
+              donthireddy.chandu@gmail.com
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-muted-foreground text-sm mb-4 md:mb-0">
+            © {new Date().getFullYear()} Chandra Sai Reddy. All rights reserved.
+          </p>
+          
+          {/* Back to top button */}
+          <motion.button
+            onClick={scrollToTop}
+            className="group flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="text-sm">Back to top</span>
+            <ArrowUp className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
+          </motion.button>
+        </div>
       </div>
-    </motion.footer>
+
+      {/* Subtle gradient line at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+    </footer>
   )
 }

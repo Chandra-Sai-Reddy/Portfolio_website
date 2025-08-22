@@ -17,7 +17,7 @@ export function BackgroundSelector() {
   // 5 = Matrix Rain
   // 6 = Tornado (original)
   
-  const SELECTED_BACKGROUND = 1 // <-- CHANGE THIS NUMBER TO SELECT BACKGROUND
+  const SELECTED_BACKGROUND: number = 1 // <-- CHANGE THIS NUMBER TO SELECT BACKGROUND
 
   switch (SELECTED_BACKGROUND) {
     case 1:

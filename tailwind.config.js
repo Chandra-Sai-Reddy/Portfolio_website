@@ -50,12 +50,24 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom color palette - Electric Purple, Cyan, and Magenta theme
-        electric: {
-          purple: "#8b5cf6",
-          cyan: "#06b6d4",
-          magenta: "#ec4899",
-          dark: "#0a0a0f",
+        // Monochrome Pro Palette
+        monochrome: {
+          black: "#000000",
+          white: "#ffffff",
+          blue: "#3b82f6",
+          gray: {
+            50: "#fafafa",
+            100: "#f4f4f4",
+            200: "#e5e5e5",
+            300: "#d4d4d4",
+            400: "#a3a3a3",
+            500: "#737373",
+            600: "#525252",
+            700: "#404040",
+            800: "#262626",
+            900: "#171717",
+            950: "#0a0a0a",
+          }
         },
       },
       borderRadius: {
@@ -94,6 +106,14 @@ module.exports = {
             transform: "translateX(0)"
           },
         },
+        "glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)",
+          },
+          "50%": {
+            boxShadow: "0 0 40px rgba(59, 130, 246, 0.8)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -101,6 +121,11 @@ module.exports = {
         "fade-in": "fade-in 0.5s ease-out",
         "fade-up": "fade-up 0.5s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
+        "glow": "glow 2s ease-in-out infinite",
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'monospace'],
       },
     },
   },

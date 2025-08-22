@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-// OPTION 5: MATRIX DIGITAL RAIN EFFECT
+// OPTION 5: MATRIX RAIN
 export function MatrixRainBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -16,138 +16,68 @@ export function MatrixRainBackground() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    const fontSize = 14
-    const columns = Math.floor(canvas.width / fontSize)
-    const drops: number[] = []
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?'
+    const fontSize = 16
+    const columns = canvas.width / fontSize
     
-    // Initialize drops
+    const drops: number[] = []
     for (let i = 0; i < columns; i++) {
-      drops[i] = Math.floor(Math.random() * -100)
+      drops[i] = Math.random() * -100
     }
 
-    // Characters to use
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
-    const charArray = chars.split('')
-
-    class MatrixColumn {
-      x: number
-      y: number
-      speed: number
-      length: number
-      chars: string[]
-      colors: string[]
-
-      constructor(x: number) {
-        this.x = x
-        this.y = Math.random() * -100
-        this.speed = Math.random() * 2 + 1
-        this.length = Math.floor(Math.random() * 20 + 10)
-        this.chars = []
-        this.colors = []
-        
-        for (let i = 0; i < this.length; i++) {
-          this.chars.push(charArray[Math.floor(Math.random() * charArray.length)])
-          
-          // Color palette
-          const colorChoices = [
-            '139, 92, 246',   // Purple
-            '6, 182, 212',    // Cyan
-          ]
-          this.colors.push(colorChoices[Math.floor(Math.random() * colorChoices.length)])
-        }
-      }
-
-      update() {
-        this.y += this.speed
-        
-        // Reset when off screen
-        if (this.y - this.length * fontSize > canvas.height) {
-          this.y = Math.random() * -100
-          this.speed = Math.random() * 2 + 1
-          this.length = Math.floor(Math.random() * 20 + 10)
-          
-          // Regenerate characters
-          this.chars = []
-          this.colors = []
-          for (let i = 0; i < this.length; i++) {
-            this.chars.push(charArray[Math.floor(Math.random() * charArray.length)])
-            const colorChoices = [
-              '139, 92, 246',
-              '6, 182, 212',
-            ]
-            this.colors.push(colorChoices[Math.floor(Math.random() * colorChoices.length)])
-          }
-        }
-        
-        // Randomly change characters
-        if (Math.random() < 0.02) {
-          const index = Math.floor(Math.random() * this.chars.length)
-          this.chars[index] = charArray[Math.floor(Math.random() * charArray.length)]
-        }
-      }
-
-      draw() {
-        for (let i = 0; i < this.chars.length; i++) {
-          const y = this.y - i * fontSize
-          
-          if (y > 0 && y < canvas.height) {
-            // Calculate opacity based on position in the column
-            let opacity = 1 - (i / this.chars.length)
-            
-            // Head of the column is brightest
-            if (i === 0) {
-              // White glow for the head
-              ctx.shadowColor = `rgba(255, 255, 255, 0.8)`
-              ctx.shadowBlur = 10
-              ctx.fillStyle = `rgba(255, 255, 255, 0.9)`
-            } else {
-              ctx.shadowBlur = 0
-              ctx.fillStyle = `rgba(${this.colors[i]}, ${opacity})`
-            }
-            
-            ctx.font = `${fontSize}px monospace`
-            ctx.fillText(this.chars[i], this.x, y)
-          }
-        }
-      }
-    }
-
-    const matrixColumns: MatrixColumn[] = []
-    for (let i = 0; i < columns; i++) {
-      matrixColumns.push(new MatrixColumn(i * fontSize))
-    }
-
-    let animationFrameId: number
-    const animate = () => {
-      // Create trail effect
-      ctx.fillStyle = 'rgba(10, 10, 20, 0.05)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    function draw(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight)
       
-      // Update and draw columns
-      matrixColumns.forEach(column => {
-        column.update()
-        column.draw()
-      })
+      ctx.fillStyle = '#0ea5e9'
+      ctx.font = `${fontSize}px monospace`
       
-      animationFrameId = requestAnimationFrame(animate)
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters.charAt(Math.floor(Math.random() * characters.length))
+        const x = i * fontSize
+        const y = drops[i] * fontSize
+        
+        // Gradient effect
+        const gradient = 1 - (y / canvasHeight)
+        ctx.fillStyle = `rgba(14, 165, 233, ${gradient})`
+        
+        ctx.fillText(text, x, y)
+        
+        if (y > canvasHeight && Math.random() > 0.975) {
+          drops[i] = 0
+        }
+        
+        drops[i]++
+      }
     }
+
+    function animate() {
+      if (!ctx || !canvas) return
+      draw(ctx, canvas.width, canvas.height)
+      requestAnimationFrame(animate)
+    }
+
     animate()
 
     const handleResize = () => {
+      if (!canvas) return
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
       
-      // Recalculate columns
-      const newColumns = Math.floor(canvas.width / fontSize)
-      matrixColumns.length = 0
+      const newColumns = canvas.width / fontSize
+      const newDrops: number[] = []
+      
       for (let i = 0; i < newColumns; i++) {
-        matrixColumns.push(new MatrixColumn(i * fontSize))
+        newDrops[i] = drops[i] || Math.random() * -100
       }
+      
+      drops.length = 0
+      drops.push(...newDrops)
     }
+
     window.addEventListener('resize', handleResize)
 
     return () => {
-      cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
     }
   }, [])
@@ -155,8 +85,7 @@ export function MatrixRainBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none opacity-50 dark:opacity-70"
-      style={{ background: 'transparent' }}
+      className="fixed inset-0 -z-10"
     />
   )
 }

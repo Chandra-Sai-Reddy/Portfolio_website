@@ -14,8 +14,7 @@ export function Education() {
   return (
     <section className="py-20 bg-muted/30 min-h-screen">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Education & Achievements</h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-12"></div>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Education & Achievements</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           <div>
