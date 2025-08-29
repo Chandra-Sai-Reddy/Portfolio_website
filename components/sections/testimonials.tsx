@@ -21,8 +21,8 @@ export function Testimonials() {
     },
     {
       id: 2,
-      name: "Mike Chen",
-      role: "Senior DevOps Engineer",
+      name: "Dr. Sambit Kumar Mishra",
+      role: "IEEE Senior Member, Assistant Professor at SRM University, AP",
       content: "One of the most talented cloud engineers I've worked with. His AWS expertise and problem-solving skills are outstanding.",
       rating: 5,
       gradient: "from-blue-500 to-blue-600"

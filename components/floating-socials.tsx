@@ -30,7 +30,7 @@ export function FloatingSocials() {
     },
     {
       icon: FileText,
-      href: '/Chandra_Sai_Reddy_Resume.pdf', // Update this path to your actual resume file
+      href: '/contact#resume', // Link to resume section in contact page
       label: 'Resume',
     },
   ]

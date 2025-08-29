@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
-import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle, FileText, Cloud, Code } from 'lucide-react'
 import Link from 'next/link'
 import { CopyEmail, MagneticButton } from '@/components/ui/micro-interactions'
 import { TextReveal } from '@/components/ui/text-reveal'
@@ -162,6 +162,54 @@ export function Contact() {
                   <Linkedin className="h-5 w-5" />
                 </Link>
               </div>
+
+              {/* Resume Download Section */}
+              <motion.div
+                id="resume"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-8 p-6 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl border border-border"
+              >
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-primary" />
+                  Download Resume
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Choose the resume that best fits your needs:
+                </p>
+                <div className="space-y-3">
+                  <a
+                    href="/Chandra_Sai_Reddy_SDE_Resume.pdf"
+                    download
+                    className="flex items-center gap-3 p-3 bg-card hover:bg-primary/10 border border-border hover:border-primary rounded-lg transition-all duration-200 group"
+                  >
+                    <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
+                      <Code className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">Software Development Engineer</p>
+                      <p className="text-xs text-muted-foreground">Full-stack development, ML, and software engineering roles</p>
+                    </div>
+                    <FileText className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </a>
+                  
+                  <a
+                    href="/Chandra_Sai_Reddy_Cloud_DevOps_Resume.pdf"
+                    download
+                    className="flex items-center gap-3 p-3 bg-card hover:bg-primary/10 border border-border hover:border-primary rounded-lg transition-all duration-200 group"
+                  >
+                    <div className="p-2 bg-green-500/10 rounded-lg group-hover:bg-green-500/20 transition-colors">
+                      <Cloud className="h-5 w-5 text-green-500" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">Cloud & DevOps Engineer</p>
+                      <p className="text-xs text-muted-foreground">Cloud architecture, DevOps, and infrastructure roles</p>
+                    </div>
+                    <FileText className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </a>
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Contact Form */}
