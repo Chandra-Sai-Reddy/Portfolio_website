@@ -29,7 +29,15 @@ export function Experience() {
           transition={{ duration: 0.5 }}
         >
           <TextReveal>
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Experience</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Experience</h2>
+            
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-12"
+            />
           </TextReveal>
 
           <div className="max-w-4xl mx-auto relative">
@@ -75,7 +83,7 @@ export function Experience() {
                   >
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                       <div className="flex-1">
-                        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-sm md:text-base font-semibold mb-2 group-hover:text-primary transition-colors">
                           {exp.title}
                         </h3>
                         <div className="flex items-center text-sm text-muted-foreground">

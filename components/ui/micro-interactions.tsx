@@ -1,50 +1,131 @@
 "use client"
 
-import { motion, useAnimation } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ReactNode, useState, useEffect } from 'react'
-import { CheckCircle } from 'lucide-react'
+import { Check, Copy } from 'lucide-react'
 
-// Magnetic button that follows cursor
+interface AnimatedCounterProps {
+  value: string
+  inView: boolean
+  className?: string
+}
+
+export function AnimatedCounter({ value, inView, className = '' }: AnimatedCounterProps) {
+  const [count, setCount] = useState(0)
+  
+  useEffect(() => {
+    if (!inView) return
+    
+    // Extract numeric value from string (handles percentages, numbers with +, etc.)
+    const numericValue = parseFloat(value.replace(/[^\d.]/g, ''))
+    
+    if (isNaN(numericValue)) {
+      setCount(0)
+      return
+    }
+
+    const duration = 2000 // 2 seconds
+    const steps = 60 // 60fps
+    const increment = numericValue / steps
+    
+    let current = 0
+    const timer = setInterval(() => {
+      current += increment
+      if (current >= numericValue) {
+        setCount(numericValue)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(current))
+      }
+    }, duration / steps)
+
+    return () => clearInterval(timer)
+  }, [inView, value])
+
+  // Format the display value (preserve original formatting)
+  const formatValue = (num: number) => {
+    if (value.includes('%')) return `${num}%`
+    if (value.includes('+')) return `${num}+`
+    return num.toString()
+  }
+
+  return (
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: inView ? 1 : 0 }}
+      className={className}
+    >
+      {formatValue(count)}
+    </motion.span>
+  )
+}
+
 interface MagneticButtonProps {
   children: ReactNode
   className?: string
-  onClick?: () => void
 }
 
-export function MagneticButton({ children, className = '', onClick }: MagneticButtonProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    
-    const distanceX = (e.clientX - centerX) * 0.1
-    const distanceY = (e.clientY - centerY) * 0.1
-    
-    setPosition({ x: distanceX, y: distanceY })
-  }
-  
-  const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 })
-  }
-  
+export function MagneticButton({ children, className = '' }: MagneticButtonProps) {
   return (
     <motion.div
-      className={`relative ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      className={className}
     >
       {children}
     </motion.div>
   )
 }
 
-// Copy email with feedback
+interface ScrollIndicatorProps {
+  className?: string
+}
+
+export function ScrollIndicator({ className = '' }: ScrollIndicatorProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1 }}
+      className={`flex flex-col items-center gap-2 ${className}`}
+    >
+      <span className="text-xs text-muted-foreground">Scroll</span>
+      <motion.div
+        animate={{ y: [0, 5, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        className="w-5 h-8 border-2 border-muted-foreground/30 rounded-full flex justify-center"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="w-1 h-2 bg-primary rounded-full mt-1"
+        />
+      </motion.div>
+    </motion.div>
+  )
+}
+
+interface GlowCardProps {
+  children: ReactNode
+  className?: string
+}
+
+export function GlowCard({ children, className = '' }: GlowCardProps) {
+  return (
+    <motion.div
+      whileHover={{ 
+        boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)',
+        borderColor: 'rgba(59, 130, 246, 0.5)'
+      }}
+      transition={{ duration: 0.3 }}
+      className={`relative p-6 rounded-lg border border-border bg-card/50 backdrop-blur ${className}`}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 interface CopyEmailProps {
   email: string
   className?: string
@@ -52,155 +133,35 @@ interface CopyEmailProps {
 
 export function CopyEmail({ email, className = '' }: CopyEmailProps) {
   const [copied, setCopied] = useState(false)
-  
-  const handleCopy = () => {
-    navigator.clipboard.writeText(email)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(email)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
   }
-  
+
   return (
-    <div className="relative inline-block">
-      <button
-        onClick={handleCopy}
-        className={`${className} transition-all duration-200 hover:text-primary relative`}
-      >
-        {email}
-      </button>
-      
-      {/* Copy feedback */}
-      <motion.div
-        initial={{ opacity: 0, y: 10, scale: 0.8 }}
-        animate={{ 
-          opacity: copied ? 1 : 0, 
-          y: copied ? -30 : 10,
-          scale: copied ? 1 : 0.8
-        }}
-        transition={{ duration: 0.2 }}
-        className="absolute left-1/2 -translate-x-1/2 bg-primary text-white px-3 py-1 rounded-full text-xs whitespace-nowrap pointer-events-none flex items-center gap-1"
-      >
-        <CheckCircle className="h-3 w-3" />
-        Copied!
-      </motion.div>
-    </div>
-  )
-}
-
-// Emoji particle explosion
-interface EmojiExplosionProps {
-  trigger: boolean
-  emoji?: string
-}
-
-export function EmojiExplosion({ trigger, emoji = '🎉' }: EmojiExplosionProps) {
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number }>>([])
-  
-  useEffect(() => {
-    if (trigger) {
-      const newParticles = Array.from({ length: 8 }, (_, i) => ({
-        id: Date.now() + i,
-        x: Math.random() * 200 - 100,
-        y: Math.random() * -200 - 50,
-      }))
-      setParticles(newParticles)
-      
-      setTimeout(() => setParticles([]), 1000)
-    }
-  }, [trigger])
-  
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute left-1/2 top-1/2 text-2xl"
-          initial={{ x: 0, y: 0, opacity: 1 }}
-          animate={{ x: particle.x, y: particle.y, opacity: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-          {emoji}
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-// Animated counter
-interface AnimatedCounterProps {
-  value: number
-  duration?: number
-  className?: string
-}
-
-export function AnimatedCounter({ value, duration = 2, className = '' }: AnimatedCounterProps) {
-  const [count, setCount] = useState(0)
-  const controls = useAnimation()
-  
-  useEffect(() => {
-    const increment = value / (duration * 60) // 60fps
-    let current = 0
-    
-    const timer = setInterval(() => {
-      current += increment
-      if (current >= value) {
-        setCount(value)
-        clearInterval(timer)
-      } else {
-        setCount(Math.floor(current))
-      }
-    }, 1000 / 60)
-    
-    return () => clearInterval(timer)
-  }, [value, duration])
-  
-  return (
-    <motion.span 
-      className={className}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
+    <button
+      onClick={handleCopy}
+      className={`group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors ${className}`}
+      data-cursor-text="Copy"
     >
-      {count}
-    </motion.span>
-  )
-}
-
-// Terminal typing effect
-interface TerminalTypingProps {
-  text: string
-  className?: string
-}
-
-export function TerminalTyping({ text, className = '' }: TerminalTypingProps) {
-  const [displayText, setDisplayText] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
-  
-  useEffect(() => {
-    let index = 0
-    const timer = setInterval(() => {
-      if (index <= text.length) {
-        setDisplayText(text.slice(0, index))
-        index++
-      } else {
-        clearInterval(timer)
-      }
-    }, 50)
-    
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev)
-    }, 500)
-    
-    return () => {
-      clearInterval(timer)
-      clearInterval(cursorTimer)
-    }
-  }, [text])
-  
-  return (
-    <div className={`font-mono ${className}`}>
-      <span className="text-primary">$ </span>
-      <span>{displayText}</span>
-      <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity`}>_</span>
-    </div>
+      <span className="font-mono">{email}</span>
+      <motion.div
+        initial={false}
+        animate={{ scale: copied ? [1, 1.2, 1] : 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        {copied ? (
+          <Check className="h-4 w-4 text-green-500" />
+        ) : (
+          <Copy className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+        )}
+      </motion.div>
+    </button>
   )
 }

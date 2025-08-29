@@ -16,7 +16,13 @@ import {
   Briefcase,
   BookOpen,
   TrendingUp,
-  Rocket
+  Rocket,
+  Monitor,
+  Database,
+  Cloud,
+  Container,
+  Brain,
+  Settings
 } from 'lucide-react'
 import Image from 'next/image'
 import { SkillProgress } from '@/components/ui/skill-progress'
@@ -28,6 +34,136 @@ export function About() {
     threshold: 0.1,
     triggerOnce: true,
   })
+
+  const technicalSkillsDetailed = [
+    {
+      category: "Programming Languages",
+      icon: Code,
+      iconColor: "bg-blue-500",
+      borderColor: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Expert",
+      experience: "3+ exp",
+      count: 9,
+      description: "Proficient in multiple paradigms including OOP, functional, and procedural programming",
+      skills: [
+        { name: "JavaScript", level: "Expert", percentage: 90 },
+        { name: "TypeScript", level: "Advanced", percentage: 85 },
+        { name: "Python", level: "Advanced", percentage: 88 },
+        { name: "Java", level: "Advanced", percentage: 85 },
+        { name: "C++", level: "Advanced", percentage: 80 },
+        { name: "Dart", level: "Proficient", percentage: 75 },
+        { name: "Kotlin", level: "Proficient", percentage: 75 },
+        { name: "Solidity", level: "Proficient", percentage: 70 },
+        { name: "SQL", level: "Advanced", percentage: 85 }
+      ]
+    },
+    {
+      category: "Frontend Development", 
+      icon: Settings,
+      iconColor: "bg-blue-500",
+      borderColor: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Expert",
+      experience: "3+ exp", 
+      count: 5,
+      description: "Creating responsive, interactive, and performant user interfaces with modern frameworks",
+      skills: [
+        { name: "React.js", level: "Expert", percentage: 90 },
+        { name: "Next.js", level: "Advanced", percentage: 85 },
+        { name: "Tailwind CSS", level: "Advanced", percentage: 88 },
+        { name: "Three.js", level: "Proficient", percentage: 75 },
+        { name: "Android SDK", level: "Advanced", percentage: 80 }
+      ]
+    },
+    {
+      category: "Backend & Databases",
+      icon: Database,
+      iconColor: "bg-blue-500", 
+      borderColor: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Expert",
+      experience: "3+ exp",
+      count: 5,
+      description: "Building scalable server-side applications and managing both SQL and NoSQL databases",
+      skills: [
+        { name: "Node.js", level: "Advanced", percentage: 88 },
+        { name: "Express.js", level: "Advanced", percentage: 85 },
+        { name: "Flask", level: "Proficient", percentage: 75 },
+        { name: "MongoDB", level: "Advanced", percentage: 85 },
+        { name: "Firebase", level: "Expert", percentage: 90 }
+      ]
+    },
+    {
+      category: "Cloud & DevOps",
+      icon: Cloud,
+      iconColor: "bg-blue-500",
+      borderColor: "border-blue-500/30", 
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Advanced",
+      experience: "2+ exp",
+      count: 6,
+      description: "Designing and implementing cloud infrastructure with automated deployment pipelines",
+      skills: [
+        { name: "AWS EC2", level: "Expert", percentage: 95 },
+        { name: "AWS S3", level: "Expert", percentage: 92 },
+        { name: "AWS Lambda", level: "Advanced", percentage: 88 },
+        { name: "AWS ECS", level: "Advanced", percentage: 85 },
+        { name: "CloudFormation", level: "Advanced", percentage: 82 },
+        { name: "GCP", level: "Advanced", percentage: 80 }
+      ]
+    },
+    {
+      category: "ML & Data Science",
+      icon: Brain,
+      iconColor: "bg-blue-500",
+      borderColor: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Advanced", 
+      experience: "2+ exp",
+      count: 7,
+      description: "Developing intelligent systems using machine learning and deep learning techniques",
+      skills: [
+        { name: "TensorFlow", level: "Advanced", percentage: 85 },
+        { name: "PyTorch", level: "Advanced", percentage: 83 },
+        { name: "Scikit-learn", level: "Expert", percentage: 90 },
+        { name: "Keras", level: "Advanced", percentage: 82 },
+        { name: "OpenCV", level: "Advanced", percentage: 80 },
+        { name: "NLP", level: "Advanced", percentage: 78 },
+        { name: "Computer Vision", level: "Advanced", percentage: 85 }
+      ]
+    },
+    {
+      category: "Blockchain & Web3",
+      icon: Code,
+      iconColor: "bg-blue-500",
+      borderColor: "border-blue-500/30",
+      hoverBorder: "hover:border-blue-500/60",
+      level: "Advanced",
+      experience: "2+ exp", 
+      count: 7,
+      description: "Building decentralized applications and smart contracts on blockchain platforms",
+      skills: [
+        { name: "Ethereum", level: "Advanced", percentage: 78 },
+        { name: "Smart Contracts", level: "Advanced", percentage: 80 },
+        { name: "Web3.js", level: "Proficient", percentage: 72 },
+        { name: "Solidity", level: "Proficient", percentage: 70 },
+        { name: "DeFi", level: "Proficient", percentage: 68 },
+        { name: "NFT Development", level: "Proficient", percentage: 70 },
+        { name: "Hardhat", level: "Proficient", percentage: 75 }
+      ]
+    }
+  ]
+
+  // Helper function to get proficiency color - Only Blue
+  const getProficiencyColor = (level: string) => {
+    return "text-blue-500" // All levels use blue-500
+  }
+
+  // Helper function to get progress bar color - Only Blue  
+  const getProgressBarColor = (level: string) => {
+    return "bg-blue-500" // All progress bars use blue-500
+  }
 
   const technicalSkills = {
     "Programming Languages": ["Python", "JavaScript", "TypeScript", "Java", "Bash", "SQL", "YAML", "HTML/CSS"],
@@ -59,6 +195,19 @@ export function About() {
         "Working on Non-disclosable project",
         "Conducting research in advanced machine learning and AI applications",
         "Collaborating with faculty on cutting-edge research initiatives"
+      ]
+    },
+    {
+      icon: Users,
+      title: "Board Member",
+      organization: "App Design and Development Club",
+      period: "2023 - 2024",
+      highlights: [
+        "Led technical initiatives and mentored junior developers to improve their programming skills",
+        "Mentored 15+ junior developers",
+        "Improved core programming skills by 68%",
+        "Conducted tailored workshops and code reviews",
+        "Implemented project-based training programs"
       ]
     },
     {
@@ -178,47 +327,52 @@ export function About() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 glitch-text" data-text="About Me">About Me</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-12 text-foreground text-center">About Me</h2>
           
-          {/* Top Section - About Me Text and Photo */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto mb-20">
+          {/* Decorative line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-12"
+          />
+          
+          {/* Top Section - About Me Text and Photo - Perfectly Aligned */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto mb-20">
             {/* Left Side - About Me Text */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="space-y-6"
+              className="space-y-4"
             >
-              <div className="prose prose-lg dark:prose-invert">
-                <p className="text-gray-100 leading-relaxed">
-                  I'm a passionate <span className="text-blue-400 font-semibold">Machine Learning Engineer</span> and <span className="text-cyan-400 font-semibold">Cloud Architect</span> currently pursuing my Master's in Computer Science at Georgia State University.
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-foreground leading-relaxed text-sm md:text-base mb-4">
+                  I'm Chandra Sai Reddy, a <span className="text-blue-500 font-semibold">Cloud and DevOps Engineer</span> with a passion for building scalable cloud-native solutions and exploring the intersection of cloud computing and machine learning. I'm currently pursuing my Master's in Computer Science at Georgia State University, where I continue to deepen my expertise in distributed systems, automation, and AI-driven applications.
                 </p>
-                <p className="text-gray-100 leading-relaxed">
-                  With expertise in building scalable ML systems and cloud infrastructure, I specialize in transforming complex data challenges into innovative solutions. My experience spans from developing real-time fraud detection systems to implementing MLOps pipelines that reduced deployment time by 75%.
+                <p className="text-foreground leading-relaxed text-sm md:text-base mb-4">
+                  With hands-on experience in <span className="text-blue-500 font-semibold">AWS, Kubernetes, Terraform, and CI/CD pipelines</span>, I enjoy designing solutions that are both cost-effective and high-performing. My work has spanned from deploying AI-powered real-time decision systems to architecting secure, efficient infrastructure pipelines — always with a focus on scalability and optimization.
                 </p>
-                <p className="text-gray-100 leading-relaxed">
-                  I'm particularly interested in the intersection of <span className="text-green-400 font-semibold">AI/ML and cloud computing</span>, focusing on building production-ready systems that can scale efficiently. My recent work includes developing computer vision models for healthcare applications and optimizing cloud infrastructure for ML workloads.
-                </p>
-                <p className="text-gray-100 leading-relaxed">
-                  When I'm not coding, you'll find me contributing to open-source projects, mentoring aspiring developers, or exploring the latest advancements in AI research. I believe in continuous learning and sharing knowledge with the tech community.
+                <p className="text-foreground leading-relaxed text-sm md:text-base">
+                  I'm particularly interested in <span className="text-blue-500 font-semibold">MLOps and cloud automation</span>, where I've developed projects ranging from a patent-published cancer classification pipeline to award-winning NLP-based applications. I thrive on turning complex challenges into innovative solutions that make technology more accessible and impactful.
                 </p>
               </div>
             </motion.div>
 
-            {/* Right Side - Photo */}
+            {/* Right Side - Photo - Aligned with Text */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center lg:justify-end"
+              className="flex justify-center lg:justify-start lg:sticky lg:top-24"
             >
-              {/* Profile Photo */}
-              <div className="w-80 h-80 rounded-2xl overflow-hidden shadow-lg">
+              {/* Profile Photo - Matching text alignment */}
+              <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-full lg:max-w-sm lg:h-auto lg:aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <Image 
                   src="/Profile_photo.JPG" 
                   alt="Chandra Sai Reddy"
-                  width={320}
-                  height={320}
+                  width={400}
+                  height={400}
                   className="w-full h-full object-cover"
                   priority
                 />
@@ -233,7 +387,15 @@ export function About() {
             transition={{ duration: 0.5, delay: 0.35 }}
             className="mb-20"
           >
-            <h3 className="text-2xl font-bold mb-8 text-center">Education</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center text-foreground">Education</h3>
+            
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-8"
+            />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               {/* Master's Degree */}
@@ -243,7 +405,7 @@ export function About() {
                     <GraduationCap className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-lg text-foreground">Master of Science in Computer Science</h4>
+                    <h4 className="font-semibold text-sm md:text-base text-foreground">Master of Science in Computer Science</h4>
                     <p className="text-primary font-medium mt-1">Georgia State University</p>
                     <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
@@ -267,7 +429,7 @@ export function About() {
                     <GraduationCap className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-lg text-foreground">Bachelor of Technology in Computer Science</h4>
+                    <h4 className="font-semibold text-sm md:text-base text-foreground">Bachelor of Technology in Computer Science</h4>
                     <p className="text-primary font-medium mt-1">SRM - AP</p>
                     <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
@@ -286,53 +448,112 @@ export function About() {
             </div>
           </motion.div>
 
-          {/* Technical Skills Section - Full Width */}
+          {/* Technical Skills Section - Card Design */}
           <motion.div
+            id="technical-skills"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mb-20"
           >
-            <h3 className="text-2xl font-bold mb-8 text-center">Technical Skills</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-12 text-center text-foreground">
+              Technical Skills
+            </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {Object.entries(technicalSkills).map(([category, skills], index) => (
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-12"
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {technicalSkillsDetailed.map((category, index) => {
+                const averageProficiency = Math.round(
+                  category.skills.reduce((acc, skill) => acc + skill.percentage, 0) / category.skills.length
+                )
+
+                return (
                 <motion.div
-                  key={category}
+                  key={category.category}
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-6 hover:border-primary/50 transition-all duration-300"
+                  className={`bg-card/90 backdrop-blur-sm border ${category.borderColor} rounded-2xl p-6 ${category.hoverBorder} transition-all duration-300 group hover:shadow-lg hover:shadow-primary/10`}
                 >
-                  <h4 className="font-semibold text-primary mb-4">{category}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2.5 py-1 text-xs font-medium rounded-md bg-background/80 text-foreground/80 border border-border/50 hover:border-primary/50 hover:text-primary transition-colors"
+                  {/* Category Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 ${category.iconColor} rounded-xl shadow-lg`}>
+                        <category.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-foreground text-sm md:text-base">{category.category}</h4>
+                        <span className="text-xs text-muted-foreground">{category.count} skills</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-primary">{category.level}</div>
+                      <div className="text-xs text-muted-foreground">{category.experience}</div>
+                    </div>
+                  </div>
+
+                  {/* Category Description */}
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    {category.description}
+                  </p>
+
+                  {/* Skills with Progress Bars */}
+                  <div className="space-y-3 mb-6">
+                    {category.skills.map((skill, skillIndex) => (
+                      <motion.div
+                        key={skill.name}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.3, delay: 0.6 + index * 0.1 + skillIndex * 0.05 }}
+                        className="space-y-2"
                       >
-                        {skill}
-                      </span>
+                        {/* Skill Name and Level */}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-foreground">{skill.name}</span>
+                          <span className={`text-xs font-semibold ${getProficiencyColor(skill.level)}`}>
+                            {skill.level} {skill.percentage}%
+                          </span>
+                        </div>
+                        
+                        {/* Progress Bar */}
+                        <div className="w-full bg-background/50 rounded-full h-1.5 overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={inView ? { width: `${skill.percentage}%` } : {}}
+                            transition={{ 
+                              duration: 1, 
+                              delay: 0.8 + index * 0.1 + skillIndex * 0.05,
+                              ease: "easeOut" 
+                            }}
+                            className={`h-full rounded-full ${getProgressBarColor(skill.level)}`}
+                          />
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
+
+                  {/* Average Proficiency Footer */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+                    className="border-t border-border/30 pt-4 mt-6"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Average Proficiency</span>
+                      <span className="text-sm md:text-base font-bold text-primary">{averageProficiency}%</span>
+                    </div>
+                  </motion.div>
                 </motion.div>
-              ))}
-            </div>
-            
-            {/* Skill Progress Indicators */}
-            <div className="mt-12">
-              <h4 className="text-lg font-semibold text-center mb-8">Core Competencies</h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-5xl mx-auto">
-                {topSkills.map((skill, index) => (
-                  <SkillProgress
-                    key={skill.name}
-                    skill={skill.name}
-                    percentage={skill.percentage}
-                    category={skill.category}
-                    delay={index}
-                  />
-                ))}
-              </div>
+                )
+              })}
             </div>
           </motion.div>
 
@@ -343,7 +564,15 @@ export function About() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="mb-20"
           >
-            <h3 className="text-2xl font-bold mb-8 text-center">Leadership & Experience</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center text-foreground">Leadership & Experience</h3>
+            
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-8"
+            />
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
               {leadershipExperiences.map((exp, index) => (
@@ -384,7 +613,15 @@ export function About() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.8 }}
           >
-            <h3 className="text-2xl font-bold mb-8 text-center">Achievements & Recognition</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center text-foreground">Achievements & Recognition</h3>
+            
+            {/* Decorative line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-8"
+            />
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
               {achievements.map((achievement, index) => (

@@ -73,7 +73,15 @@ export function Contact() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">Get In Touch</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Get In Touch</h2>
+          
+          {/* Decorative line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={inView ? { opacity: 1, scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-8"
+          />
           
           {/* Available for opportunities badge */}
           <div className="text-center mb-12">
@@ -95,7 +103,7 @@ export function Contact() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="text-2xl font-semibold mb-6">Let's Connect</h3>
+              <h3 className="text-sm md:text-base font-semibold mb-6">Let's Connect</h3>
               <p className="text-muted-foreground mb-8">
                 I'm always interested in discussing new opportunities, innovative projects, 
                 and collaborations in machine learning and cloud engineering. Feel free to 

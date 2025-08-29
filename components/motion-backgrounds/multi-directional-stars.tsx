@@ -36,7 +36,7 @@ export function MultiDirectionalStarsBackground() {
         
         this.reset(canvasWidth, canvasHeight)
         
-        const colors = ['255, 255, 255', '59, 130, 246', '6, 182, 212', '168, 85, 247']
+        const colors = ['255, 255, 255', '59, 130, 246', '6, 182, 212', '168, 85, 247', '0, 255, 255']
         this.color = colors[Math.floor(Math.random() * colors.length)]
       }
 
@@ -190,38 +190,37 @@ export function MultiDirectionalStarsBackground() {
           opacity = 1 - this.z / 1000
         }
 
-        // Draw star
+        // Draw star with higher opacity
         ctx.beginPath()
-        ctx.fillStyle = `rgba(${this.color}, ${opacity})`
+        ctx.fillStyle = `rgba(${this.color}, ${Math.min(opacity * 1.5, 1)})`
         ctx.arc(x, y, this.size, 0, Math.PI * 2)
         ctx.fill()
         ctx.closePath()
 
-        // Draw trail for moving stars
+        // Add bright glow effect to all stars
+        const glowGradient = ctx.createRadialGradient(x, y, 0, x, y, this.size * 3)
+        glowGradient.addColorStop(0, `rgba(${this.color}, ${Math.min(opacity * 0.8, 1)})`)
+        glowGradient.addColorStop(0.5, `rgba(${this.color}, ${Math.min(opacity * 0.4, 1)})`)
+        glowGradient.addColorStop(1, `rgba(${this.color}, 0)`)
+        
+        ctx.fillStyle = glowGradient
+        ctx.beginPath()
+        ctx.arc(x, y, this.size * 3, 0, Math.PI * 2)
+        ctx.fill()
+
+        // Draw brighter trail for moving stars
         if (this.direction !== 'center' || this.z < 900) {
           ctx.beginPath()
           
           const gradient = ctx.createLinearGradient(this.prevX, this.prevY, x, y)
           gradient.addColorStop(0, `rgba(${this.color}, 0)`)
-          gradient.addColorStop(1, `rgba(${this.color}, ${opacity * 0.5})`)
+          gradient.addColorStop(1, `rgba(${this.color}, ${Math.min(opacity * 0.8, 1)})`)
           
           ctx.strokeStyle = gradient
-          ctx.lineWidth = this.size / 2
+          ctx.lineWidth = this.size / 1.5
           ctx.moveTo(this.prevX, this.prevY)
           ctx.lineTo(x, y)
           ctx.stroke()
-        }
-
-        // Add glow effect for brighter stars
-        if (this.size > 1.5) {
-          const glowGradient = ctx.createRadialGradient(x, y, 0, x, y, this.size * 2)
-          glowGradient.addColorStop(0, `rgba(${this.color}, ${opacity * 0.3})`)
-          glowGradient.addColorStop(1, `rgba(${this.color}, 0)`)
-          
-          ctx.fillStyle = glowGradient
-          ctx.beginPath()
-          ctx.arc(x, y, this.size * 2, 0, Math.PI * 2)
-          ctx.fill()
         }
       }
     }
@@ -262,9 +261,9 @@ export function MultiDirectionalStarsBackground() {
     }
 
     const stars: Star[] = []
-    const starCount = 200
+    const starCount = 300 // Increased from 200 for more visible effect
     const nebulas: Nebula[] = []
-    const nebulaCount = 3
+    const nebulaCount = 5 // Increased for more background ambiance
 
     // Create stars
     for (let i = 0; i < starCount; i++) {
@@ -279,8 +278,8 @@ export function MultiDirectionalStarsBackground() {
     function animate() {
       if (!ctx || !canvas) return
       
-      // Create trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      // Create subtle trail effect (reduced for brighter particles)
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.02)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // Draw nebulas (background)

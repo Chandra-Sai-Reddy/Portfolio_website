@@ -9,6 +9,7 @@ interface HUDStatsProps {
     label: string
     value: number
     suffix?: string
+    prefix?: string
   }[]
 }
 
@@ -19,51 +20,44 @@ export function HUDStats({ stats }: HUDStatsProps) {
   })
   
   return (
-    <div ref={ref} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div ref={ref} className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
       {stats.map((stat, index) => (
-        <div
+        <motion.div
           key={stat.label}
-          className="relative group"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className="relative group flex flex-col items-center"
         >
-          {/* Hexagonal background */}
-          <div className="hex-clip absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent" />
+          {/* Background glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {/* Content */}
-          <div className="relative p-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              {/* Value with counter animation */}
-              <div className="text-3xl font-bold text-primary terminal-cursor">
+          <div className="relative text-center">
+            {/* Value with counter animation */}
+            <div className="text-3xl md:text-4xl font-bold mb-2">
+              <span className="text-foreground">
+                {stat.prefix}
                 {inView && (
                   <CountUp end={stat.value} duration={2} />
                 )}
                 {stat.suffix}
-              </div>
-              
-              {/* Label */}
-              <div className="text-xs text-muted-foreground mt-2 uppercase tracking-wider">
-                {stat.label}
-              </div>
-              
-              {/* Scanning line on hover */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100"
-                initial={{ y: '-100%' }}
-                whileHover={{ y: '100%' }}
-                transition={{ duration: 0.5 }}
-              />
-            </motion.div>
+              </span>
+            </div>
+            
+            {/* Label */}
+            <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider">
+              {stat.label}
+            </div>
+            
+            {/* Decorative dots */}
+            <div className="flex justify-center gap-1 mt-3">
+              <div className="w-1 h-1 bg-blue-500/50 rounded-full" />
+              <div className="w-1 h-1 bg-blue-500 rounded-full" />
+              <div className="w-1 h-1 bg-blue-500/50 rounded-full" />
+            </div>
           </div>
-          
-          {/* Corner dots */}
-          <div className="absolute top-2 left-2 w-1 h-1 bg-primary rounded-full" />
-          <div className="absolute top-2 right-2 w-1 h-1 bg-primary rounded-full" />
-          <div className="absolute bottom-2 left-2 w-1 h-1 bg-primary rounded-full" />
-          <div className="absolute bottom-2 right-2 w-1 h-1 bg-primary rounded-full" />
-        </div>
+        </motion.div>
       ))}
     </div>
   )

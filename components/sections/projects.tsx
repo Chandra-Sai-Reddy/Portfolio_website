@@ -23,7 +23,15 @@ export function Projects() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Projects & Research</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Projects & Research</h2>
+          
+          {/* Decorative line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-6 mb-12"
+          />
 
           {/* Featured Projects Section */}
           <div className="mb-16">
@@ -47,7 +55,7 @@ export function Projects() {
                       </div>
                     )}
                     
-                    <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
+                    <h3 className="text-sm md:text-base font-semibold mb-3">{project.title}</h3>
                     <p className="text-muted-foreground mb-4 flex-grow">{project.description}</p>
                     
                     {project.patent && (
@@ -130,7 +138,7 @@ export function Projects() {
                 <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-200">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold mb-2">{thesisProject.title}</h3>
+                      <h3 className="text-sm md:text-base font-semibold mb-2">{thesisProject.title}</h3>
                       <p className="text-sm text-primary mb-3">{thesisProject.description}</p>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
@@ -185,7 +193,7 @@ export function Projects() {
                   <div className="bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-200">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h3 className="text-xl font-semibold mb-2">{research.title}</h3>
+                        <h3 className="text-sm md:text-base font-semibold mb-2">{research.title}</h3>
                         <p className="text-sm text-primary mb-3">{research.description}</p>
                       </div>
                       <BookOpen className="h-5 w-5 text-muted-foreground ml-4 flex-shrink-0" />
